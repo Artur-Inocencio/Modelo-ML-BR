@@ -1,13 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
-import numpy as np
 import pickle
-from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
 
 # Configuração da API Flask
 app = Flask(__name__)
@@ -30,15 +24,14 @@ def preprocess_input(data):
     return input_data
 
 # Carregar o modelo treinado
-with open('C:\\Users\\artur\\Downloads\\PROJETO\\modelo-prf-br.pkl', 'rb') as model_file:
+with open('./modelo-prf-br.pkl', 'rb') as model_file:
     modelo_completo = pickle.load(model_file)
 
 @app.route('/prever', methods=['POST'])
 def prever_probabilidade():
     try:
         # Receber dados da solicitação em formato JSON
-        dados = request.get_json()
-        #print("Dados:", dados)  
+        dados = request.get_json() 
         # Pré-processar os dados
         input_data = preprocess_input(dados)
         if modelo_completo is None: 
